@@ -1,0 +1,237 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org./1999/xhtml">
+<head th:replace="common/header :: common-header">
+
+
+<body class="d-flex flex-column">
+<div th:replace="common/header :: navbar"></div>
+
+<form id="filter-form" method="get" th:action="@{/store}">
+    <div class="container page-content">
+        <div class="row gutters-3">
+
+            <!-- Shop Filters -->
+            <div class="col-lg-3 col-md-4 space">
+                <div class="accordion accordion-caret accordion-sidebar d-none d-md-block">
+                    <div class="card">
+                        <div class="card-header">
+                            <a aria-controls="filter-categories" aria-expanded="true" class="h6"
+                               data-toggle="collapse" href="#filter-categories" role="button">
+                                CATEGORIES
+                            </a>
+                        </div>
+                        <div class="collapse show" id="filter-categories">
+                            <div class="card-body">
+                                <div class="custom-control custom-checkbox" th:each="item : ${allCategories}">
+                                    <input class="custom-control-input"
+                                           th:checked="${((param.category != null) and (#lists.contains(param.category, item )))} ? checked"
+                                           th:id="${item}"
+                                           th:name="category" th:value="${item}"
+                                           type="checkbox">
+                                    <label class="custom-control-label" th:for="${item}" th:text="${item}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a aria-controls="filter-price" aria-expanded="true" class="h6"
+                               data-toggle="collapse" href="#filter-price" role="button">
+                                PRICE
+                            </a>
+                        </div>
+                        <div class="collapse show" id="filter-price">
+                            <div class="card-body">
+                                <div class="d-flex justify-content-between">
+                                    <input class="form-control form-control-sm rounded-pill text-center font-weight-bold bg-light mr-2 minw-0"
+                                           th:name="pricelow"
+                                           th:value="${param.pricelow}" type="text">
+                                    <input class="form-control form-control-sm rounded-pill text-center font-weight-bold bg-light ml-2 minw-0"
+                                           th:name="pricehigh"
+                                           th:value="${param.pricehigh}" type="text">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header">
+                            <a aria-controls="filter-brands" aria-expanded="true" class="h6"
+                               data-toggle="collapse" href="#filter-brands" role="button">
+                                BRANDS
+                            </a>
+                        </div>
+                        <div class="collapse show" id="filter-brands">
+                            <div class="card-body">
+                                <div class="custom-control custom-checkbox" th:each="item : ${allBrands}">
+                                    <input class="custom-control-input"
+                                           th:checked="${((param.brand != null) and (#lists.contains(param.brand, item )))} ? checked"
+                                           th:id="${item}" th:name="brand"
+                                           th:value="${item}"
+                                           type="checkbox">
+                                    <label class="custom-control-label" th:for="${item}" th:text="${item}"></label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header px-5 py-2 text-center">
+                            <button class="btn btn-primary rounded-pill btn-block btn-sm" form="filter-form"
+                                    type="submit">APPLY
+                            </button>
+                        </div>
+                    </div>
+                </div>   <!-- end of accordion sidebar -->
+
+            </div>
+            <!-- /Shop Filters -->
+
+            <div class="col-lg-9 col-md-8 space">
+                <!-- /Shop Toolbar -->
+                <div class="card mb-3">
+                    <div class="row card-body d-flex justify-content-between align-items-start py-2">
+
+                        <div class="col-8 col-md-7 col-lg-6">
+                            <button class="btn btn-sm btn-outline-primary rounded-pill d-block d-md-none mb-2"
+                                    data-target="#filterModal"
+                                    data-toggle="modal" type="button">
+                                <i data-feather="filter"></i> Filter
+                            </button>
+                            <div class="input-group input-group-search input-group-sm mb-2">
+
+                                <input class="form-control border-0 bg-light input-search" placeholder="Search..."
+                                       th:name="search"
+                                       th:value="${filters.search}" type="text">
+                                <div class="input-group-append">
+                                    <button class="btn btn-light" type="submit"><i data-feather="search"></i></button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="btn-group ml-3">
+                            <button aria-expanded="false" aria-haspopup="true"
+                                    class="btn btn-light btn-sm border rounded-pill"
+                                    data-toggle="dropdown" type="button">
+                                <th:block th:switch="${filters.sort}">
+                                    <span id="dropdown-sort-text" th:case="'priceasc'">Low - High Price</span>
+                                    <span id="dropdown-sort-text" th:case="'pricedesc'">High - Low Price</span>
+                                    <span id="dropdown-sort-text" th:case="'alphasc'">A - Z Order</span>
+                                    <span id="dropdown-sort-text" th:case="'alphdesc'">Z - A Order</span>
+                                    <span id="dropdown-sort-text" th:case="*">Newest</span>
+                                </th:block>
+                                <i data-feather="chevron-down"></i>
+                            </button>
+                            <div class="dropdown-menu dropdown-menu-right shadow-sm">
+                                <button class="dropdown-item button-sort" type="button" value="newest">Newest</button>
+                                <button class="dropdown-item button-sort" type="button" value="priceasc">Low - High
+                                    Price
+                                </button>
+                                <button class="dropdown-item button-sort" type="button" value="pricedesc">High - Low
+                                    Price
+                                </button>
+                                <button class="dropdown-item button-sort" type="button" value="alphasc">A - Z Order
+                                </button>
+                                <button class="dropdown-item button-sort" type="button" value="alphdesc">Z - A Order
+                                </button>
+                            </div>
+                        </div>
+                        <input hidden="hidden" id="input-sort" name="sort" th:value="${filters.sort}" type="text">
+                    </div>
+                </div>
+                <!-- Shop toolbar -->
+
+                <!-- Shop Grid -->
+                <div class="grid grid-gap-3 grid-col-2 grid-col-lg-3 mb-3 space">
+                    <div class="card card-product" th:each="article : ${articles}">
+                        <div class="card-body">
+                            <a th:href="@{/article-detail?id=}+${article.id}">
+                                <img alt="Card image cap" class="card-img-top" th:src="@{'/image/articles/' + ${article.picture}}">
+                            </a>
+                            <a class="card-title" th:href="@{/article-detail?id=}+${article.id}"
+                               th:text="${article.title}"></a>
+                            <div class="price"><span class="h5"
+                                                     th:text="'$'+${#numbers.formatDecimal(article.price, 0, T(Math).round(article.price) == article.price ? 0 : 2)}"> </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- /Shop Grid -->
+
+                <!-- Pagination -->
+                <div class="card">
+                    <div class="card-body d-flex justify-content-center">
+                        <div id="light-pagination"></div>
+                    </div>
+                </div>
+                <!-- /Pagination -->
+
+            </div>
+        </div>
+    </div> <!-- end container -->
+
+    <!-- Filter Modal -->
+    <div aria-hidden="true" class="modal fade" id="filterModal" role="dialog" tabindex="-1">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header border-bottom-0">
+                    <h5 class="modal-title">Shop Filters</h5>
+                    <button aria-label="Close" class="close" data-dismiss="modal" type="button">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body p-0">
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- /Filter Modal -->
+
+    <input hidden="hidden" id="page" name="page" th:value="${filters.page}" type="text">
+
+    <input hidden="hidden" id="totalitems" th:value="${totalitems}" type="text">
+    <input hidden="hidden" id="itemsperpage" th:value="${itemsperpage}" type="text">
+
+</form>
+
+<div th:replace="common/header :: footer"></div>
+<div th:replace="common/header :: body-scripts"></div>
+
+<script>
+    var sidebarContent = $('.accordion-sidebar').html()
+    $('#filterModal').on('show.bs.modal', function () {
+        // move filter contents to modal body
+        $(this).find('.modal-body').html('<div class="accordion accordion-caret accordion-sidebar accordion-modal">' + sidebarContent + '</div>')
+        // empty the sidebar filter contents
+        $('.accordion-sidebar:not(.accordion-modal)').html('')
+    })
+    $('#filterModal').on('hidden.bs.modal', function () {
+        $('.accordion-modal').remove() // remove modal filter contents
+        $('.accordion-sidebar').html(sidebarContent) // move filter contents back to the sidebar
+    })
+    $('.button-sort').click(function () {
+        var value = $(this).val()
+        var text = $(this).text()
+        $('#input-sort').val(value)
+        $('#dropdown-sort-text').text(text)
+        $('#filter-form').submit()
+    })
+
+    $(function () {
+        $('#light-pagination').pagination({
+            items: $('#totalitems').val(),
+            itemsOnPage: $('#itemsperpage').val(),
+            currentPage: $('#page').val(),
+            cssStyle: 'light-theme',
+            useAnchors: false,
+            prevText: "<",
+            nextText: ">",
+            displayedPages: 1,
+            edges: 1,
+            onPageClick: function (pageNumber) {
+                $('#page').val(pageNumber)
+                $('#filter-form').submit()
+            }
+        });
+    });
+</script>
+</body>
+</html>
