@@ -48,6 +48,19 @@ public class ArticleController {
                 .ofCategories(Arrays.asList(request.getParameter("category").split("\\s*,\\s*")))
                 .ofBrand(Arrays.asList(request.getParameter("brand").split("\\s*,\\s*")))
                 .withPicture(imageService.create(picture))
+                .withDiagonal(article.getDiagonal())
+                .withNits(article.getNits())
+                .withMemoryType(article.getMemoryType())
+                .withMemoryCapacity(article.getMemoryCapacity())
+                .withNumberOfSlots(article.getNumberOfSlots())
+                .withProcessorModel(article.getProcessorModel())
+                .withNumberOfCores(article.getNumberOfCores())
+                .withProcessorTechnology(article.getProcessorTechnology())
+                .withProcessorType(article.getProcessorType())
+                .withResolution(article.getResolution())
+                .withRefreshRate(article.getRefreshRate())
+                .withMaximumMemoryCapacity(article.getMaximumMemoryCapacity())
+                .withProcessorProducer(article.getProcessorProducer())
                 .build();
 
         articleService.saveArticle(newArticle);
@@ -90,6 +103,19 @@ public class ArticleController {
                 .withPrice(article.getPrice())
                 .ofCategories(Arrays.asList(request.getParameter("category").split("\\s*,\\s*")))
                 .ofBrand(Arrays.asList(request.getParameter("brand").split("\\s*,\\s*")))
+                .withDiagonal(article.getDiagonal())
+                .withNits(article.getNits())
+                .withMemoryType(article.getMemoryType())
+                .withMemoryCapacity(article.getMemoryCapacity())
+                .withNumberOfSlots(article.getNumberOfSlots())
+                .withProcessorModel(article.getProcessorModel())
+                .withNumberOfCores(article.getNumberOfCores())
+                .withProcessorTechnology(article.getProcessorTechnology())
+                .withProcessorType(article.getProcessorType())
+                .withResolution(article.getResolution())
+                .withRefreshRate(article.getRefreshRate())
+                .withMaximumMemoryCapacity(article.getMaximumMemoryCapacity())
+                .withProcessorProducer(article.getProcessorProducer())
                 .build();
         newArticle.setId(article.getId());
         articleService.saveArticle(newArticle);

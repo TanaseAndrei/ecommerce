@@ -25,4 +25,6 @@ public interface ArticleService {
 
 	List<String> getAllBrands();
 
+	List<Article> findAllByKeyword(String keyword);
+
 }

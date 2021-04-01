@@ -27,6 +27,15 @@
     <!-- Feather icons -->
     <script src="https://unpkg.com/feather-icons"></script>
 
+    <script type="text/javascript">
+        $(function () {
+            $("#articleName").autocomplete({
+                source: "/api/articlesForAutocomplete",
+                minLength: 3
+            });
+        });
+    </script>
+
 </head>
 
 
@@ -39,6 +48,7 @@
                 aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
+
         <div class="collapse navbar-collapse" id="navbarCollapse">
             <ul class="navbar-nav mr-auto font-weight-bold">
                 <li class="nav-item">
@@ -53,6 +63,21 @@
                               th:text="${shoppingCartItemNumber} > 0 ? ${shoppingCartItemNumber}">
                         </span>
                     </a>
+                </li>
+                <li>
+                    <!-- Search bar -->
+                    <div class="search-input">
+                        <a href="" target="_blank" hidden></a>
+                        <input id="articleName" type="search" class="form-control" placeholder="Type to search.."
+                               name="searchArticle" list="Article_Search">
+                        <datalist id="Article_Search">
+                            <option value="Oak"></option>
+                            <option value="Maple"></option>
+                            <option value="Pine"></option>
+                            <option value="Spruce"></option>
+                            <option value="Oak Leaved"></option>
+                        </datalist>
+                    </div>
                 </li>
             </ul>
             <ul class="navbar-nav ml-auto font-weight-bold">
@@ -85,8 +110,10 @@
                     <p>to our <b>Newsletter</b> to receive the latest news, sales and promos</p>
                     <form>
                         <div class="form-group">
-                            <input type="email" class="form-control rounded-pill text-center footer-input"
-                                   placeholder="Enter your email">
+                            <label>
+                                <input type="email" class="form-control rounded-pill text-center footer-input"
+                                       placeholder="Enter your email">
+                            </label>>
                         </div>
                         <button type="button" class="btn btn-primary btn-block rounded-pill">SUBSCRIBE</button>
                     </form>
@@ -157,7 +184,6 @@
             });
         });
     </script>
-
 </div>
 
 </body>
